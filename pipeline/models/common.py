@@ -73,3 +73,16 @@ class Bottleneck(nn.Module):
             x1 = self.conv1(x)
             x = self.conv2(x)
         return x
+
+class Concat(nn.Module):
+    """ implement concatenation of a list of tensors along dimension
+
+    Arguments:
+        dimension (int): dimension axis
+    """
+    def __init__(self, dimension = 1):
+        super(Concat, self).__init__()
+        self.d = dimension
+
+    def forward(self, x):
+        return torch.cat(x, self.d)
