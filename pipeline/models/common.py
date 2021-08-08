@@ -31,12 +31,14 @@ class Conv(nn.Module):
             g (int): number of blocked connections from input channels to output channels
             act (bool): whether or not apply activation function
         """
-        super(conv_module, self).__init__()
+        super(Conv, self).__init__()
+        # print("[INFO] CONV shape: ch in: {}, ch out: {}, kernel: {}, stride: {}".format(ch_in, ch_out, (k, k), (s, s)))
         self.conv = nn.Conv2d(ch_in, ch_out, k, s, autopad(k, p), bias = False)
-        self.bn = nn.BatchNormd2d(ch_out)
+        self.bn = nn.BatchNorm2d(ch_out)
         self.act = nn.LeakyReLU(0.1) if act is True else (act if isinstance(act, nn.Module) else nn.Identity())
 
     def forward(self, x):
+        # print("[INFO] x shape: {}".format(x.shape))
         x = self.conv(x)
         x = self.bn(x)
         x = self.act(x)
@@ -71,7 +73,7 @@ class Bottleneck(nn.Module):
             x += self.conv2(x1)
         else:
             x1 = self.conv1(x)
-            x = self.conv2(x)
+            x = self.conv2(x1)
         return x
 
 class Concat(nn.Module):
